@@ -8,6 +8,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -19,7 +22,7 @@ jobs:
           cache: npm
 
       - name: Install Dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build App
         run: npm run build
