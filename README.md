@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Credex AI Spend Audit
 
-## Getting Started
+A free tool that evaluates your startup's AI tool spend, instantly calculates potential savings, and provides a personalized, LLM-generated optimization report. Built for engineering managers and founders who want to stop overpaying for duplicate AI subscriptions.
 
-First, run the development server:
+## Screenshots
+
+> ## Dashboard
+>
+> ![Dashboard](./images/Screenshot%202026-05-12%20135746.png)
+
+## Audit Form
+![Audit Form](./images/Screenshot%202026-05-12%20135806.png)
+
+## Quick Start
+
+### 1. Install Dependencies
+
+```bash
+npm install
+```
+
+### 2. Environment Variables
+
+Copy the `.env.example` to `.env.local` and fill in your API keys:
+
+```bash
+cp .env.example .env.local
+```
+
+Required keys:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `RESEND_API_KEY`
+- `ANTHROPIC_API_KEY`
+
+### 3. Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. Deploy
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To deploy, push the code to a GitHub repository and connect it to Vercel. Ensure you add the environment variables in the Vercel dashboard before deploying.
 
-## Learn More
+## Decisions (Trade-offs)
 
-To learn more about Next.js, take a look at the following resources:
+1. **Next.js over Vite**: Traded a slightly heavier initial setup for native Server-Side Rendering (SSR). SSR is mandatory for generating dynamic Open Graph tags on the shareable URL, which is the core of the viral loop.
+2. **Hardcoded Pricing over DB**: Traded CMS flexibility for speed and reliability. Hardcoding the pricing tiers in `utils/auditEngine.ts` guarantees the math is always correct for the MVP without requiring complex DB schemas.
+3. **LLM as Synthesizer, not Calculator**: Traded "pure AI" for defensible logic. I wrote explicit math rules for the pricing to ensure accuracy, and only use the Anthropic API to write the prose summary. LLMs are bad at math, so this ensures financial trust.
+4. **Email Gating _After_ Value**: Traded higher total lead volume for higher _quality_ leads. The user sees their total savings upfront, but must provide an email to get the detailed breakdown and shareable link.
+5. **Supabase over SQLite**: Traded local simplicity for a real cloud backend. Using Vercel + Supabase ensures the lead data is actually stored in a production-ready environment as requested.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Live Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> _(Add your Vercel URL here)_
